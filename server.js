@@ -48,9 +48,9 @@ Category.belongsToMany(Course, {through: 'course_category'}); // Category modeli
 
 
 
-// IIFE fonksiyonu
+// IIFE fonksiyonu => Immediately Invoked Function Expression (Hemen Çağrılan Fonksiyon İfadesi)
 // (async () => {
-//     await sequelize.sync({force: false});
+//     await sequelize.sync({force: true});
 //     await dummyData();
 // })();
 

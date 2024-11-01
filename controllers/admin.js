@@ -134,7 +134,8 @@ const get_course_list = async (req, res) => {
             include: { // ilişkili tabloyu getirir
                 model: Category,
                 attributes: ['name']
-            }
+            },
+            order: [['id', 'ASC']]
         }) // eager loading (tek sorguda ilişkili tabloyu getirir)
         res.render('admin/courses/index', {
             title: "Admin Courses",

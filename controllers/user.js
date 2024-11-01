@@ -42,7 +42,10 @@ const get_course_details = async (req, res) => {
 
 const get_course_list = async (req, res) => {
     try {
-        const courses = await Course.findAll({raw: true});
+        const courses = await Course.findAll({
+            raw: true,
+            order: [['id', 'ASC']]
+        });
         const categories = await Category.findAll();
         res.render('users/courses/courses', {
             title: "All courses",
@@ -76,9 +79,10 @@ const get_popular_courses = async (req, res) => {
                 isPopular: {
                     [Op.eq]: true // eğer isPopular true eşitse
                 }
-            }, raw: true // raw: true ile sadece verileri alırız.
+            }, raw: true, // raw: true ile sadece verileri alırız.
+            order: [['id', 'ASC']]
         });
-        const categories = await Category.findAll();
+        const categories = await Category.findAll({order: [['id', 'ASC']]});
         res.render('users/courses/index', {
             title: "Popular Courses",
             categories,
