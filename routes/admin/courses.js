@@ -1,0 +1,12 @@
+const exp = require('express');
+const router = exp.Router();
+const imgUpload = require('../../helpers/image-upload');
+const adminController = require('../../controllers/admin');
+router.get("/create", adminController.get_course_create);
+router.post("/create", imgUpload.single('img'), adminController.post_course_create);
+router.get("/edit/:courseId", adminController.get_course_edit);
+router.post("/edit/:courseId", imgUpload.single('img'), adminController.post_course_edit);
+router.get("/delete/:courseId", adminController.get_course_delete);
+router.post("/delete/:courseId", adminController.post_course_delete);
+router.get("/", adminController.get_course_list);
+module.exports = router;

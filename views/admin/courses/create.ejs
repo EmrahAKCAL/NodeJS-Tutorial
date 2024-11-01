@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("../../partials/head") %>
+</head>
+<body>
+<%- include("../../partials/nav") %>
+<div class="container mt-3 min-vh-100">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h3">Create Course</h1>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <label for="title"
+                                       class="col-sm-2 col-form-label">
+                                    Title
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text"
+                                           class="form-control"
+                                           id="title"
+                                           name="title">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="description"
+                                       class="col-sm-2 col-form-label">
+                                    Description
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control"
+                                              id="description"
+                                              rows="4"
+                                              name="description"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="img"
+                                       class="col-sm-2 col-form-label">
+                                    Image
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="file"
+                                           class="form-control"
+                                           id="img"
+                                           name="img"
+                                           accept="image/png, image/jpeg"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="isPopular"
+                                               name="isPopular">
+                                        <label class="form-check-label"
+                                               for="isPopular">
+                                            Is Popular ?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div>
+                                <label for="category"
+                                       class="col-form-label">
+                                    Category
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <% categories.forEach(category=> { %>
+                                    <div class="form-check">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               id="category_<%= category.id %>"
+                                               name="categories[]"
+                                               value="<%= category.id %>"
+                                        />
+                                        <label class="form-check-label"
+                                               for="category_<%= category.id %>">
+                                            <%= category.name %>
+                                        </label>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row mt-3">
+                            <div class="col-md-10 offset-md-2">
+                                <button type="submit" class="btn btn-primary mt-2">Sign in</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include("../../partials/footer") %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/43.2.0/ckeditor.js"
+        integrity="sha512-Gfl9qC0rCTsG5delOJBh2KQJ/bajB6G4Dp+PcbbeVnaJniXMNcRFAEe4zrwE2bJO3idqunEKBA7OGzuSWKof5Q=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+</body>
+</html>

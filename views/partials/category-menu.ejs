@@ -1,0 +1,10 @@
+<div class="list-group">
+    <a href="/courses" class="list-group-item list-group-item-action
+<%= categorySlug == 'all' ? 'active': ''%>">All Categories</a>
+    <% categories.forEach((category) => { %>
+        <a href="/categories/<%=category.slug%>/courses" class="list-group-item list-group-item-action
+        <%= category.slug == categorySlug ? 'active': ''%>">
+            <%= category.name %>
+        </a>
+    <% }) %>
+</div>

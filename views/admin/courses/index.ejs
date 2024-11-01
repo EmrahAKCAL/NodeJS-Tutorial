@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("../../partials/head") %>
+</head>
+<body>
+<%- include("../../partials/nav") %>
+<div class="container mt-3 min-vh-100">
+    <div class="row mb-2">
+        <% if(action != undefined){ %>
+            <% if (action === 'create'){ %>
+                <div class="alert alert-success" role="alert"><%= courseTitle %>;
+                    Course created successfully
+                </div>
+            <% }else if(action == 'edit'){ %>
+                <div class="alert alert-success" role="alert">
+                    courseId=<%= id %>; Course updated successfully
+                </div>
+            <% }else if(action == 'delete'){ %>
+                <div class="alert alert-danger" role="alert">
+                    courseId=<%= id %>;Course deleted successfully
+                </div>
+            <% } %>
+        <% } %>
+        <div class="col-md-6">
+            <h4 class="m-0">Admin Courses</h4>
+        </div>
+        <div class="col-md-6 d-flex  justify-content-end">
+            <a href="/admin/courses/create" class="btn btn-primary float-right btn-sm">Create Course</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr class="table-info">
+            <th>#</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th class="text-center">Is Popular</th>
+            <th class="text-center">Category</th>
+            <th class="text-center">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% courses.forEach((course, index) => { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                    <img src="/static/images/<%= course.img %>" alt="" style="width: 50px; height: 50px;">
+                </td>
+                <td> <%= course.title %></td>
+                <td> <%- course.description %></td>
+                <td class="text-center"> <%= course.isPopular %></td>
+                <td>
+                    <ul>
+                        <% course.categories.forEach((category) => { %>
+                            <li><%= category.name %></li>
+                        <% }) %>
+                    </ul>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="/admin/courses/edit/<%= course.id %>" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="/admin/courses/delete/<%= course.id %>" class="btn btn-danger btn-sm ms-1">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        <% }) %>
+        <% if(!courses.length){ %>
+            <tr>
+                <td colspan="6" class="text-center">No courses found</td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+<%- include("../../partials/footer") %>
+</body>
+</html>

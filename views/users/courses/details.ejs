@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("../../partials/head") %>
+</head>
+<body>
+<%- include("../../partials/nav") %>
+<div class="container mt-3 min-vh-100">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/static/images/<%= course.img %>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><%= course.title %></h5>
+                    <p class="card-text"><%- course.description %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Is Popular:
+                        <% if (course.isPopular) { %>
+                            <span class="text-white bg-success rounded p-1">Yes</span>
+                        <% } else { %>
+                            <span class="text-white bg-danger rounded p-1">No</span>
+                        <% } %>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include("../../partials/footer") %>
+</body>
+</html>

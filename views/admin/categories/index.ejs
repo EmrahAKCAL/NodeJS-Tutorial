@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("../../partials/head") %>
+</head>
+<body>
+<%- include("../../partials/nav") %>
+<div class="container mt-3 min-vh-100">
+    <% if(action != undefined){ %>
+        <% if (action === 'create'){ %>
+            <div class="alert alert-success" role="alert"><%= name %>;
+                Category created successfully
+            </div>
+        <% }else if(action == 'edit'){ %>
+            <div class="alert alert-success" role="alert">
+                categoryId=<%= id %>; Category updated successfully
+            </div>
+        <% }else if(action == 'delete'){ %>
+            <div class="alert alert-danger" role="alert">
+                categoryId=<%= id %>;Category deleted successfully
+            </div>
+        <% } %>
+    <% } %>
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <h4 class="m-0"><%= title %></h4>
+        </div>
+        <div class="col-md-6 d-flex  justify-content-end">
+            <a href="/admin/categories/delete-all"
+               class="btn btn-danger float-right btn-sm me-1">
+                Delete
+            </a>
+            <a href="/admin/categories/create" class="btn btn-primary float-right btn-sm">Create Category</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr class="table-info">
+            <th style="width: 70px;">#</th>
+            <th>Name</th>
+            <th class="text-center" style="width: 180px;">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% categories.forEach((category, index) => { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td> <%= category.name %></td>
+                <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="/admin/categories/delete/<%= category.id %>"
+                           class="btn btn-danger btn-sm ms-1">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        <% }) %>
+        <% if(!categories.length){ %>
+            <tr>
+                <td colspan="3" class="text-center">No categories found</td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+<%- include("../../partials/footer") %>
+</body>
+</html>
