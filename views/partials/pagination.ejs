@@ -1,19 +1,32 @@
-<nav>
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a href="" class="page-link">< Previous</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">1</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">2</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">3</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">Next ></a>
-        </li>
-    </ul>
-</nav>
+<%if (typeof totalPages !=='undefined' && totalPages > 1) {%>
+    <div class="d-flex justify-content-end align-items-center">
+        <div class="mb-2 me-3"><span>Showing
+            <%= (currentPage -1) * currentSize +1 %>
+            -
+            <%= currentPage * currentSize > totalItems ? totalItems : currentPage * currentSize %>
+            of
+            <%= totalItems %>
+        </span>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item <% if (currentPage === 1) { %>disabled<% } %>">
+                    <a class="page-link"
+                       href="?page=1"
+                    >< Previous</a>
+                </li>
+                <% for(let i = 0; i < totalPages; i++){ %>
+                    <li class="page-item">
+                        <a class="page-link <% if (currentPage === i+ 1) { %>active<% } %>"
+                           href="?page=<%= i +1 %>">
+                            <%= i +1%>
+                        </a></li>
+                <% } %>
+                <li class="page-item <% if (currentPage === totalPages) { %>disabled<% } %>">
+                    <a class="page-link"
+                       href="?page=<%= currentPage+1 %>">Next ></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<%}%>

@@ -33,35 +33,39 @@
             <a href="/admin/categories/create" class="btn btn-primary float-right btn-sm">Create Category</a>
         </div>
     </div>
-    <table class="table table-bordered table-striped">
-        <thead>
-        <tr class="table-info">
-            <th style="width: 70px;">#</th>
-            <th>Name</th>
-            <th class="text-center" style="width: 180px;">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% categories.forEach((category, index) => { %>
-            <tr>
-                <td><%= index + 1 %></td>
-                <td> <%= category.name %></td>
-                <td>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-primary btn-sm">Edit</a>
-                        <a href="/admin/categories/delete/<%= category.id %>"
-                           class="btn btn-danger btn-sm ms-1">Delete</a>
-                    </div>
-                </td>
+    <div class="card">
+        <table class="table table-striped">
+            <thead>
+            <tr class="table-info">
+                <th class="border-end text-center"
+                    style="width: 50px;">#</th>
+                <th class="border-end">Name</th>
+                <th class="text-center" style="width: 180px;">Action</th>
             </tr>
-        <% }) %>
-        <% if(!categories.length){ %>
-            <tr>
-                <td colspan="3" class="text-center">No categories found</td>
-            </tr>
-        <% } %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <% categories.forEach((category, index) => { %>
+                <tr>
+                    <td class="border-end text-center"><%= index + 1 %></td>
+                    <td class="border-end"> <%= category.name %></td>
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="/admin/categories/delete/<%= category.id %>"
+                               class="btn btn-danger btn-sm ms-1">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            <% }) %>
+            <% if(!categories.length){ %>
+                <tr>
+                    <td colspan="3" class="text-center">No categories found</td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <%- include("../../partials/pagination") %>
+    </div>
 </div>
 <%- include("../../partials/footer") %>
 </body>

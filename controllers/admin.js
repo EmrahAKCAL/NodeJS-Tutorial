@@ -128,19 +128,28 @@ const post_course_delete = async (req, res) => {
     }
 }
 const get_course_list = async (req, res) => {
+    const size = 5;
+    const {page = 1} = req.query;
     try {
-        const courses = await Course.findAll({
+        const {rows, count} = await Course.findAndCountAll({
             attributes: ['id', 'title', 'description', 'isPopular', 'img'],
             include: { // ilişkili tabloyu getirir
                 model: Category,
                 attributes: ['name']
             },
-            order: [['id', 'ASC']]
+            order: [['id', 'ASC']],
+            limit: size,
+            offset: (page -1) * size,
+            distinct: true // ilişkili tablodan gelen verileri tekrarsız getirir
         }) // eager loading (tek sorguda ilişkili tabloyu getirir)
         res.render('admin/courses/index', {
             title: "Admin Courses",
-            courses,
+            courses: rows,
             action: req.query.action,
+            totalPages: Math.ceil(count / size),
+            totalItems: count,
+            currentPage: parseInt(page),
+            currentSize: size,
             courseTitle: req.query.title,
             id: req.query.id,
         });
@@ -171,7 +180,10 @@ const get_category_create = async (req, res) => {
 const post_category_create = async (req, res) => {
     const name = req.body.name;
     try {
-        await Category.create({name});
+        await Category.create({
+            name: name,
+            slug: slugify(name)
+        });
         res.redirect('/admin/categories?action=create&name=' + name);
     } catch (err) {
         console.log(err);
@@ -255,14 +267,25 @@ const get_category_list = async (req, res) => {
     const action = req.query.action;
     const id = req.query.id;
     const name = req.query.name;
+    const size = 5;
+    const {page = 1} = req.query;
     try {
-        const categories = await Category.findAll();
+        const {rows, count} = await Category.findAndCountAll({
+            order: [['id', 'ASC']],
+            limit: size,
+            offset: (page -1) * size,
+            distinct: true
+        });
         res.render('admin/categories/index', {
             title: "Categories",
-            categories,
+            categories: rows,
             action,
             id,
-            name
+            name,
+            totalPages: Math.ceil(count / size) || 0,
+            totalItems: count,
+            currentPage: parseInt(page),
+            currentSize: size,
         });
     } catch (err) {
         console.log(err);

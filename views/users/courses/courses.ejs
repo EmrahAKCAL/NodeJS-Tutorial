@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-9">
             <h1 class="h3 mb-3">
-                Courses (<%= courses.length %>)
+                Courses (<%= totalItems %>)
             </h1>
             <%if(courses.length === 0 ){%>
                 <%- include("../../partials/no-course") %>
@@ -20,9 +20,7 @@
             <% courses.forEach((course) => { %>
                 <%- include("../../partials/course-card", course) %>
             <% }) %>
-            <% if(courses.length > 3 ) {%>
-                <%- include("../../partials/pagination") %>
-            <%}%>
+            <%- include("../../partials/pagination") %>
         </div>
     </div>
 </div>

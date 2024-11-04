@@ -1,12 +1,16 @@
 sequelize => SQL sorgularını model kullanılarak veritabanına sorgu yazmamızı sağlayan kütüphane.
-uygulama ile veritabanı arasında bir köprü görevi görür.(ORM)
-ORM => Object Relational Mapping
-
+Uygulama ile veritabanı arasında bir köprü görevi görür.(ORM)
+* ORM => Object Relational Mapping
+## Docker ile PostgreSQL DB oluşturma
+Proje klasörü altında bulunan scripts klasörü dizine girilir ve aşağıdaki komut çalıştırılır.
+```
+docker-compose up
+```
+## Sequelize Kurulum
 ``` 
 npm i sequilze
 ```
-
-## Sequelize
+## Sequelize Tablo Modeli Oluşturma
 
 ```
 const {DataTypes} = require('sequelize');
@@ -30,35 +34,25 @@ const Category = sequelize.define('category', {
 
 ```
 
-* Course.sync({force: true}); **tabloyu oluşturur(force: true => tabloyu her seferinde silip oluşturur, alter:true =>
-  tabloyu günceller)**
+* Course.sync({force: true}); **tabloyu oluşturur(force: true => tabloyu her seferinde silip oluşturur, alter:true => tabloyu günceller)**
 * await Category.count();  **tablodaki kayıt sayısını döner**
 * await Category.bulkCreate(categories); **çoklu kayıt ekleme**
 * const categories = await Categories.findAll();  **tüm kayıtları döner**
-* const courses = await Course.findAll({where: {isPopular: true}, raw: true}); **isPopular true olan kayıtları döner(raw:
-  true => sadece verileri döner)**
-* const courses await Course.findAll({ where: { isPopular: true, categoryId: req.query.categoryId}}); **isPopular true olan
-  ve categoryId'si req.query.categoryId olan kayıtları döner**
-* const courses = await Course.findAll({where: {[Op.and]: [{isPopular: true}, {categoryId: req.query.categoryId}]}}); *
-  *isPopular true olan ve categoryId'si req.query.categoryId olan kayıtları döner**
-* const courses = await Course.findAndCountAll({where: {isPopular: true}, raw: true, limit: 2, offset: 0}); **isPopular true
-  olan kayıtların 2 tanesini döner(limit => kaç kayıt döneceğini belirler, offset => kaçıncı kayıttan başlayacağını
-  belirler)**
+* const courses = await Course.findAll({where: {isPopular: true}, raw: true}); **isPopular true olan kayıtları döner(raw: true => sadece verileri döner)**
+* const courses await Course.findAll({ where: { isPopular: true, categoryId: req.query.categoryId}}); **isPopular true olan ve categoryId'si req.query.categoryId olan kayıtları döner**
+* const courses = await Course.findAll({where: {[Op.and]: [{isPopular: true}, {categoryId: req.query.categoryId}]}}); **isPopular true olan ve categoryId'si req.query.categoryId olan kayıtları döner**
+* const courses = await Course.findAndCountAll({where: {isPopular: true}, raw: true, limit: 2, offset: 0}); **isPopular true olan kayıtların 2 tanesini döner(limit => kaç kayıt döneceğini belirler, offset => kaçıncı kayıttan başlayacağını belirler)**
 * const category = await Categories.findByPk(1); **id'si 1 olan kaydı döner**
 * const category = await Categories.findOne({where: {name: 'category1'}}); **name'i category1 olan kaydı döner**
-* const category = await Categories.findOne({where: {name: 'category1'}, attributes: ['name']}); **name'i category1 olan
-  kaydın sadece name alanını döner**
-* const category = await Categories.findOne({where: {name: 'category1'}, attributes: {exclude: ['name']}}); **name'i
-  category1 olan kaydın name alanını dışındaki tüm alanları döner**
-* const category = await Categories.findOne({where: {name: 'category1'}, attributes: {include: ['name']}}); **name'i
-  category1 olan kaydın name alanını döner**
+* const category = await Categories.findOne({where: {name: 'category1'}, attributes: ['name']}); **name'i category1 olan kaydın sadece name alanını döner**
+* const category = await Categories.findOne({where: {name: 'category1'}, attributes: {exclude: ['name']}}); **name'i category1 olan kaydın name alanını dışındaki tüm alanları döner**
+* const category = await Categories.findOne({where: {name: 'category1'}, attributes: {include: ['name']}}); **name'i category1 olan kaydın name alanını döner**
 * await Categories.create({name}); **yeni kayıt ekleme**
 * await Categories.update({name}, {where: {id}}); **id'si 1 olan kaydın name alanını günceller**
 * await Categories.destroy({where: {id}}); **id'si 1 olan kaydı siler**
 * await Categories.destroy({truncate: true}); **tabloyu siler**
 * await Categories.destroy({where: {id: {[Op.gt]: 1}}}); **id'si 1 den büyük olan kayıtları siler**
-* await Categories.destroy({where: {id: {[Op.gt]: 1}, name: {[Op.like]: '%category%'}}}); **id'si 1 den büyük ve name'i
-  category içeren kayıtları siler**
+* await Categories.destroy({where: {id: {[Op.gt]: 1}, name: {[Op.like]: '%category%'}}}); **id'si 1 den büyük ve name'i category içeren kayıtları siler**
 * await Categories.destroy({where: {id: {[Op.lt]: 10}}}); **id 10 dan küçük olan kayıtları döner**
 
 *Many to Many ilişki*

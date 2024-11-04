@@ -4,20 +4,29 @@ const {Op} = require("sequelize");
 
 const get_courses_by_category = async (req, res) => {
     const slug = req.params.slug;
+    const size = 5;
+    const {page = 1} = req.query
     try {
-        const courses = await Course.findAll({
+        const {rows, count} = await Course.findAndCountAll({
             include: {
                 model: Category,
                 where: {slug: slug}
             },
+            order: [['id', 'ASC']],
+            limit: size,
+            offset: (page - 1) * size,
             raw: true
         });
         const categories = await Category.findAll();
         res.render('users/courses/courses', {
             title: "Category: " + slug + " courses",
             categories,
-            courses: courses,
-            categorySlug: slug
+            courses: rows,
+            categorySlug: slug,
+            totalPages: Math.ceil(count / size),
+            totalItems: count,
+            currentPage: parseInt(page),
+            currentSize: size,
         });
     } catch (error) {
         res.render('errors/500');
@@ -41,17 +50,25 @@ const get_course_details = async (req, res) => {
 };
 
 const get_course_list = async (req, res) => {
+    const size = 5;
+    const {page = 1} = req.query;
     try {
-        const courses = await Course.findAll({
+        const {rows, count} = await Course.findAndCountAll({
             raw: true,
-            order: [['id', 'ASC']]
+            order: [['id', 'ASC']],
+            limit: size,
+            offset: (page - 1) * size,
         });
         const categories = await Category.findAll();
         res.render('users/courses/courses', {
             title: "All courses",
             categories,
-            courses: courses,
+            courses: rows,
             categorySlug: 'all',
+            totalPages: Math.ceil(count / size),
+            totalItems: count,
+            currentPage: parseInt(page),
+            currentSize: size,
         });
     } catch (err) {
         console.log(err);
@@ -59,6 +76,8 @@ const get_course_list = async (req, res) => {
 };
 
 const get_popular_courses = async (req, res) => {
+    const size = 5;
+    const {page = 1} = req.query;
     try {
         // const courses = await Course.findAll({ where: {
         //     isPopular: true,
@@ -73,21 +92,28 @@ const get_popular_courses = async (req, res) => {
         //     [Op.or]: [{isPopular: true}, {categoryId: req.query.categoryId}]
         //     }});
         // const courses = await Course.findAndCountAll({where: {isPopular: true}, raw: true, limit: 2, offset: 0});
-        const courses = await Course.findAll({
+        const {rows, count} = await Course.findAndCountAll({
             where: {
                 // isPopular: true, // her ikisini de kullanabiliriz.
                 isPopular: {
                     [Op.eq]: true // eğer isPopular true eşitse
                 }
-            }, raw: true, // raw: true ile sadece verileri alırız.
-            order: [['id', 'ASC']]
+            },
+            raw: true, // raw: true ile sadece verileri alırız.
+            order: [['id', 'ASC']],
+            limit: size,
+            offset: (page - 1) * size,
         });
         const categories = await Category.findAll({order: [['id', 'ASC']]});
         res.render('users/courses/index', {
             title: "Popular Courses",
             categories,
-            courses: courses,
+            courses: rows,
             categorySlug: null,
+            totalPages: Math.ceil(count / size),
+            totalItems: count,
+            currentPage: parseInt(page),
+            currentSize: size,
         });
     } catch (err) {
         console.log(err);
