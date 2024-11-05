@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include("../partials/head") %>
+    <style>
+        body {
+            background-color: #101317;
+        }
+        .card-width {
+            width: 100%;
+            max-width: 300px;
+        }
+        .card {
+            background-color: #151b23;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+        }
+        .form-group label, h4, p {
+            color: #f0f6fc;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<%- include("../partials/nav") %>
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="card-width">
+            <!--sign in header-->
+            <div class="card p-3">
+                <img src="/static/images/logo128.png"
+                     alt="logo"
+                     class="mx-auto d-block logo">
+                <h4 class="text-center m-0">Sign in to your account</h4>
+            </div>
+            <!--sign in form-->
+            <div class="card mt-2 px-3 py-4">
+                <% if (success){%>
+                    <div class="alert alert-success p-2"
+                         role="alert">
+                        Registration successful. You can login now.
+                    </div>
+                <%}%>
+                <form action="/login" method="POST">
+                    <!--email-->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email"
+                               class="form-control"
+                               name="email"
+                               id="email"
+                               required>
+                    </div>
+                    <!--password-->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password"
+                               class="form-control"
+                               name="password"
+                               id="password"
+                               required>
+                    </div>
+                    <!--submit button-->
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Sign in</button>
+                </form>
+            </div>
+            <!--register link-->
+            <div class="card mt-2 p-3">
+                <p class="text-center m-0">Don't have an account?
+                    <a href="/account/register"
+                       class="text-primary text-decoration-none"
+                    >Register</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

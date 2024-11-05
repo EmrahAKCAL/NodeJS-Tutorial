@@ -4,6 +4,7 @@ const adminCoursesRoutes = require('./routes/admin/courses');
 const adminCatRoutes = require('./routes/admin/categories');
 const userCoursesRoutes = require('./routes/users/courses');
 const userCatRoutes = require('./routes/users/categories');
+const authRoutes = require('./routes/auth/auth');
 const path = require('path');
 app.set('view engine', 'ejs');
 app.use(exp.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -13,14 +14,17 @@ app.use("/static", exp.static(path.join(__dirname, 'public')));
 app.use('/admin/courses', adminCoursesRoutes);
 app.use('/admin/categories', adminCatRoutes);
 app.use('/categories', userCatRoutes);
+app.use('/account', authRoutes);
 app.use(userCoursesRoutes);
 
 
-//ilişkiler
+//Database işlemleri
 const sequelize = require('./data/db');
 const dummyData = require('./data/dummy-data');
+//Models
 const Category = require('./models/category');
 const Course = require('./models/course');
+const User = require('./models/user');
 
 /**************************************************************** One-to-One BAŞLANGIÇ *********************************************************
 Category.hasMany(Course, {
@@ -44,7 +48,8 @@ Category.hasMany(Course, {
 
 Course.belongsToMany(Category, {through: 'course_category'}); // Course modeli Category modeline ait olabilir. course_category adında bir tablo oluşturulacak.
 Category.belongsToMany(Course, {through: 'course_category'}); // Category modeli Course modeline ait olabilir. course_category adında bir tablo oluşturulacak.
-
+Course.belongsTo(User);
+User.hasMany(Course);
 
 
 
