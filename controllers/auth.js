@@ -81,7 +81,8 @@ const post_login = async (req, res) => {
                     error: 'An error occurred. Please try again.'
                 });
             }
-            return res.redirect('/');
+            const redirect = req.query.redirect || '/';
+            return res.redirect(redirect);
         });
 
     } catch (error) {
