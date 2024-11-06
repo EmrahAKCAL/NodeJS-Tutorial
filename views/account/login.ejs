@@ -39,18 +39,12 @@
             </div>
             <!--sign in form-->
             <div class="card mt-2 px-3 py-4">
-                <% if (typeof success !=='undefined' && success){%>
-                    <div class="alert alert-success p-2"
+                <% if (typeof message !=='undefined' && message){%>
+                    <div class="alert p-2 <%= error ? 'alert-danger' : 'alert-success'%>"
                          role="alert">
-                        Registration successful. You can login now.
+                        <%= message %>
                     </div>
                 <%}%>
-                    <% if (typeof error !=='undefined' && error){%>
-                        <div class="alert alert-danger p-2"
-                             role="alert">
-                            <%= error %>
-                        </div>
-                    <%}%>
                 <form method="post">
                     <!--email-->
                     <div class="form-group">
