@@ -71,6 +71,7 @@ const post_login = async (req, res) => {
                 error: 'Invalid email or password.'
             });
         }
+        res.cookie('isAuthenticated', true);
         return res.redirect('/');
 
     } catch (error) {
@@ -78,10 +79,19 @@ const post_login = async (req, res) => {
     }
 }
 
+const get_logout = async (req, res) => {
+    try {
+        res.clearCookie('isAuthenticated');
+        return res.redirect('/account/login');
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = {
     get_register,
     post_register,
     get_login,
-    post_login
+    post_login,
+    get_logout
 }

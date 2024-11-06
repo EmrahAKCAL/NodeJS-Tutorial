@@ -6,9 +6,10 @@ const userCoursesRoutes = require('./routes/users/courses');
 const userCatRoutes = require('./routes/users/categories');
 const authRoutes = require('./routes/auth/auth');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 app.use(exp.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
-
+app.use(cookieParser())
 app.use("/libs", exp.static(path.join(__dirname, 'node_modules')));
 app.use("/static", exp.static(path.join(__dirname, 'public')));
 app.use('/admin/courses', adminCoursesRoutes);
