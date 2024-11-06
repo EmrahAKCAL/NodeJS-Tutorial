@@ -1,21 +1,38 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="/">Home</a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a href="/courses" class="nav-link">Courses</a>
-            </li>
-            <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated){ %>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a href="/admin/courses" class="nav-link">Admin Courses</a>
+                    <a href="/courses" class="nav-link">Courses</a>
                 </li>
-                <li class="nav-item">
-                    <a href="/admin/categories" class="nav-link">Admin Categories</a>
-                </li>
-            <% } %>
-        </ul>
+                <% if (isAuthenticated){ %>
+                    <li class="nav-item">
+                        <a href="/admin/courses" class="nav-link">Admin Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/categories" class="nav-link">Admin Categories</a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
         <ul class="navbar-nav">
-            <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated){ %>
+            <% if (isAuthenticated){ %>
+                <!--User name and avatar-->
+                <li class="nav-item me-2">
+                    <div class="d-flex">
+                        <span class="nav-link"><%= email %></span>
+                        <img src="/static/images/avatar.png"
+                             alt="<%= email %>"
+                             class="rounded-circle my-auto"
+                             width="30"
+                             height="30"
+                             style="border: #fff 1px solid;"
+                        >
+                    </div>
+
+                </li>
+                <!--Sign out link-->
                 <li class="nav-item">
                     <a href="/account/logout" class="nav-link">Sign out</a>
                 </li>

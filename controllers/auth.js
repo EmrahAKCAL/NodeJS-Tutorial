@@ -73,7 +73,16 @@ const post_login = async (req, res) => {
         }
         // res.cookie('isAuthenticated', true);
         req.session.isAuthenticated = true;
-        return res.redirect('/');
+        req.session.email = user.email
+        req.session.save((err) => {
+            if (err) {
+                return res.render('account/login', {
+                    title: 'Login',
+                    error: 'An error occurred. Please try again.'
+                });
+            }
+            return res.redirect('/');
+        });
 
     } catch (error) {
         console.log(error);

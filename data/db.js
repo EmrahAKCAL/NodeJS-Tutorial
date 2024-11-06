@@ -8,6 +8,6 @@ const sequelize = new Sequelize(config.db.database, config.db.user, config.db.pa
     define: {
         // freezeTableName: true,  // tablo isimlerini çoğul yapmaz
         timestamps: false, // created_at ve updated_at alanlarını oluşturmaz
-    },
+    }
 });
 module.exports = sequelize;

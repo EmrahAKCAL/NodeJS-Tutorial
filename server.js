@@ -1,14 +1,36 @@
+//express modules
 const exp = require('express');
 const app = exp();
+
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+
+// node_modules
+const path = require('path');
+
+// Routes
 const adminCoursesRoutes = require('./routes/admin/courses');
 const adminCatRoutes = require('./routes/admin/categories');
 const userCoursesRoutes = require('./routes/users/courses');
 const userCatRoutes = require('./routes/users/categories');
 const authRoutes = require('./routes/auth/auth');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
+
+//custom modules
+const sequelize = require('./data/db');
+const dummyData = require('./data/dummy-data');
+const locals = require('./middlewares/locals');
+
+// view engine
 app.set('view engine', 'ejs');
+
+//Models
+const Category = require('./models/category');
+const Course = require('./models/course');
+const User = require('./models/user');
+
+
+// middlewares
 app.use(exp.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser())
 app.use(session({
@@ -16,10 +38,14 @@ app.use(session({
     resave: false, // oturum bilgileri değişmediğinde tekrar kaydetme
     saveUninitialized: false, // oturum başlatılmadığında kaydetme
     cookie: {
-        // 10 saniye sonra oturumun süresi dolacak
-        maxAge: 1000 * 10
-    }
+        // 10 dk sonra oturumun süresi dolacak
+        maxAge: 1000 * 60 * 10
+    },
+    store: new SequelizeStore({
+        db: sequelize
+    })
 }));
+app.use(locals);
 app.use("/libs", exp.static(path.join(__dirname, 'node_modules')));
 app.use("/static", exp.static(path.join(__dirname, 'public')));
 app.use('/admin/courses', adminCoursesRoutes);
@@ -28,15 +54,7 @@ app.use('/categories', userCatRoutes);
 app.use('/account', authRoutes);
 app.use(userCoursesRoutes);
 
-
-//Database işlemleri
-const sequelize = require('./data/db');
-const dummyData = require('./data/dummy-data');
-//Models
-const Category = require('./models/category');
-const Course = require('./models/course');
-const User = require('./models/user');
-
+// models between relationships
 /**************************************************************** One-to-One BAŞLANGIÇ *********************************************************
 Category.hasMany(Course, {
     foreignKey: {
@@ -56,7 +74,6 @@ Category.hasMany(Course, {
 //**************************************************************** One-to-One SON *********************************************************/
 
 //**************************************************************** Many-to-Many BAŞLANGIÇ *********************************************************
-
 Course.belongsToMany(Category, {through: 'course_category'}); // Course modeli Category modeline ait olabilir. course_category adında bir tablo oluşturulacak.
 Category.belongsToMany(Course, {through: 'course_category'}); // Category modeli Course modeline ait olabilir. course_category adında bir tablo oluşturulacak.
 Course.belongsTo(User);
