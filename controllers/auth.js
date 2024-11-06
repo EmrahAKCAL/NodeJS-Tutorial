@@ -71,7 +71,8 @@ const post_login = async (req, res) => {
                 error: 'Invalid email or password.'
             });
         }
-        res.cookie('isAuthenticated', true);
+        // res.cookie('isAuthenticated', true);
+        req.session.isAuthenticated = true;
         return res.redirect('/');
 
     } catch (error) {
@@ -81,7 +82,8 @@ const post_login = async (req, res) => {
 
 const get_logout = async (req, res) => {
     try {
-        res.clearCookie('isAuthenticated');
+        // res.clearCookie('isAuthenticated');
+        await req.session.destroy();
         return res.redirect('/account/login');
     } catch (error) {
         console.log(error);

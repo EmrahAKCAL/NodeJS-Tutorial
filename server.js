@@ -7,9 +7,19 @@ const userCatRoutes = require('./routes/users/categories');
 const authRoutes = require('./routes/auth/auth');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 app.set('view engine', 'ejs');
 app.use(exp.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser())
+app.use(session({
+    secret: 'cab27ccc-01f6-4efe-8292-db0306de3e7b',
+    resave: false, // oturum bilgileri değişmediğinde tekrar kaydetme
+    saveUninitialized: false, // oturum başlatılmadığında kaydetme
+    cookie: {
+        // 10 saniye sonra oturumun süresi dolacak
+        maxAge: 1000 * 10
+    }
+}));
 app.use("/libs", exp.static(path.join(__dirname, 'node_modules')));
 app.use("/static", exp.static(path.join(__dirname, 'public')));
 app.use('/admin/courses', adminCoursesRoutes);

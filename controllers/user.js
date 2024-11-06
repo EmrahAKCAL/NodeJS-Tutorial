@@ -114,7 +114,8 @@ const get_popular_courses = async (req, res) => {
             totalItems: count,
             currentPage: parseInt(page),
             currentSize: size,
-            isAuthenticated: req.cookies.isAuthenticated
+            // isAuthenticated: req.cookies.isAuthenticated
+            isAuthenticated: req.session.isAuthenticated
         });
     } catch (err) {
         console.log(err);
